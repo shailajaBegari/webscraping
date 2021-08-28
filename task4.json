@@ -1,0 +1,40 @@
+{
+    "MOVIE NAME": " Toy Story 4  ",
+    "MOVIE URL": "https://www.rottentomatoes.com/m/toy_story_4",
+    "RATING": "G",
+    "GENUR": [
+        "Adventure,",
+        "Fantasy,",
+        "Animation,",
+        "Comedy,",
+        "Kids",
+        "&",
+        "family"
+    ],
+    " ORIGINAL LANGUAGE": [
+        "English"
+    ],
+    "DIRECTOR": [
+        "Josh",
+        "Cooley"
+    ],
+    "PRODUCER": [
+        "Mark",
+        "Nielsen,",
+        "Jonas",
+        "Rivera,",
+        "Galyn",
+        "Susman"
+    ],
+    "WRITER": [
+        "Andrew",
+        "Stanton,",
+        "Stephany",
+        "Folsom"
+    ],
+    "RUNTIME": 100,
+    "DISTRIBUTOR": [
+        "Walt",
+        "Disney"
+    ]
+}
