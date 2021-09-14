@@ -1,104 +1,83 @@
-import  json 
+import json
 import requests
 from bs4 import BeautifulSoup
+# from task1 import scrape_top_movies
 
-movie_url="https://www.rottentomatoes.com/m/toy_story_4"
-movie_name=" Toy Story 4  "
+movieurl='https://www.rottentomatoes.com/m/toy_story_4'
 
-def  scrape_movie_details(movie_url ):
-    res=requests.get(movie_url)
-    soup=BeautifulSoup(res.text,'html.parser')
+
+def scrape_top_movie(movieurl):
+    request=requests.get(movieurl)
+    soup=BeautifulSoup(request.text,'html.parser')
+    
+    
+    maindiv=soup.find_all('li',class_='meta-row clearfix')
+    moviename=soup.find('h1',class_='scoreboard__title').get_text()
+    
     d={}
-
-    maindiv=soup.find_all("li",class_="meta-row clearfix")
-    d["MOVIE NAME"]=movie_name
-    d["MOVIE URL"]=movie_url
+    d['Moviename']=moviename
+    d['Movieurl']=movieurl
     for v in maindiv:
         x=v.get_text().strip()
         y=x.split()
-        # print(y)
-        # d={}
-        # d["MOVIE NAME"]=movie_name
-        # d["MOVIE URL"]=movie_url
-        if y[0]=="Rating:":
-            d["RATING"]=y[1]
-        # print(d)
-        elif y[0]=="Genre:":
-            b=[]
+        
+        if y[0]=='Rating:':
+            d['Rating']=y[1]
+        elif y[0]=='Genre:':
+            g=[]
             for i in y:
-                if i!="Genre:":
+                if i != 'Genre:':
                     a=i.strip()
-                    b.append(a)
-                d["GENUR"]=b
-            # print(d) 
-        elif y[1]=="Language:":
-            d[" ORIGINAL LANGUAGE"]=[y[2]]
-            # print(d)
-        elif y[0]=="Director:":
+                    g.append(a)
+            d['Genre']=g
+            
+        elif y[1]=='Language:':
+            list=[] 
+            for i in y:
+                list.append(i)
+            a=list
+            a.remove('Original')
+            if a[0]=='Language:':
+                a=[a[1]]
+            d['Language']=a
+        elif y[0]=='Director:':
             di=[]
             for i in y:
-                if i!="Director:":
-                    di.append(i)
-                d["DIRECTOR"]=di
-            # print(d)
-        elif y[0]=="Producer:":
+                di.append(i)
+            di.remove('Director:')
+            i=0
+            b=[]
+            while i<len(di):
+                j=0
+                s=""
+                while j<2:
+                    v=i+j
+                    s=s+di[v]
+                    j=j+1
+                i=i+2
+                b.append(s)
+            d['Director']=b
+    
+        elif y[0]=='Producer:':
             p=[]
             for i in y:
-                if i!="Producer:":
-                    p.append(i)
-                d["PRODUCER"]=p
-            # print(d)
-        elif y[0]=="Writer:":
-            w=[]
-            for i in y:
-                if i!="Writer:":
-                    w.append(i)
-                d["WRITER"]=w
-            # print(d)
-        elif y[0]=="Runtime:":
+                if i != 'Producer:':
+                    a=i.strip()
+                    p.append(a)
+            d['Producer']=p
+
+        elif y[0]=='Runtime:':
             r=[]
             for i in y:
-                if i!="Runtime:":
+                if i != 'Runtime:':
                     a=i.strip()[:-1]
                     r.append(a)
-            # print(r)
             a=int(r[0])
-            # print(a)
-            con=a*60
+            mul=a*60
             b=int(r[1])
-            sum=con+b
-            d["RUNTIME"]=sum
-        # print(d)
-        elif y[0]=="Distributor:":
-            D=[]
-            for i in y:
-                if i!="Distributor:":
-                    D.append(i)
-                d["DISTRIBUTOR"]=D
-            # print(d)
-    with open("task4.json","w") as f:
+            sum_min=mul+b
+            d['Runtime']=sum_min
+    with open('task4.json','w') as f:
         json.dump(d,f,indent=4)
-    
-
-scrape_movie_details(movie_url)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return d
+scrape_top_movie(movieurl)
